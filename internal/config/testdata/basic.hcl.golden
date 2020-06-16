@@ -11,8 +11,11 @@
  AppleId: (*config.AppleId)({
   Username: (string) (len=21) "mitchellh@example.com",
   Password: (string) (len=5) "hello",
+  ApiKey: (string) "",
+  ApiIssuer: (string) "",
   Provider: (string) ""
  }),
  Zip: (*config.Zip)(<nil>),
- Dmg: (*config.Dmg)(<nil>)
+ Dmg: (*config.Dmg)(<nil>),
+ DontNotarize: (bool) false
 })
