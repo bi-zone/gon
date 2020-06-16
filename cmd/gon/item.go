@@ -72,6 +72,8 @@ func (i *item) notarize(ctx context.Context, opts *processOptions) error {
 		Username:   opts.Config.AppleId.Username,
 		Password:   opts.Config.AppleId.Password,
 		Provider:   opts.Config.AppleId.Provider,
+		ApiKey:     opts.Config.AppleId.ApiKey,
+		ApiIssuer:  opts.Config.AppleId.ApiIssuer,
 		Logger:     opts.Logger.Named("notarize"),
 		Status:     &statusHuman{Prefix: opts.Prefix, Lock: lock},
 		UploadLock: opts.UploadLock,

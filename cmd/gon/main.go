@@ -145,34 +145,8 @@ func realMain() int {
 	if cfg.AppleId == nil {
 		cfg.AppleId = &config.AppleId{}
 	}
-	if cfg.AppleId.Username == "" {
-		appleIdUsername, ok := os.LookupEnv("AC_USERNAME")
-		if !ok {
-			color.New(color.Bold, color.FgRed).Fprintf(os.Stdout, "❗️ No apple_id username provided\n")
-			color.New(color.FgRed).Fprintf(os.Stdout,
-				"An Apple ID username must be specified in the `apple_id` block or\n"+
-					"it must exist in the environment as AC_USERNAME,\n"+
-					"otherwise we won't be able to authenticate with Apple to notarize.\n")
-			return 1
-		}
-
-		cfg.AppleId.Username = appleIdUsername
-	}
-
-	if cfg.AppleId.Password == "" {
-		if _, ok := os.LookupEnv("AC_PASSWORD"); !ok {
-			color.New(color.Bold, color.FgRed).Fprintf(os.Stdout, "❗️ No apple_id password provided\n")
-			color.New(color.FgRed).Fprintf(os.Stdout,
-				"An Apple ID password (or lookup directive) must be specified in the\n"+
-					"`apple_id` block or it must exist in the environment as AC_PASSWORD,\n"+
-					"otherwise we won't be able to authenticate with Apple to notarize.\n")
-			return 1
-		}
-
-		cfg.AppleId.Password = "@env:AC_PASSWORD"
-	}
-	if cfg.AppleId.Provider == "" {
-		cfg.AppleId.Provider = os.Getenv("AC_PROVIDER")
+	if ret := validateAndSetEnv(cfg.AppleId); ret != 0 {
+		return ret
 	}
 
 	// If we're in source mode, then sign & package as configured
@@ -308,6 +282,88 @@ func realMain() int {
 	}
 
 	return 0
+}
+
+func validateAndSetEnv(appleIdCfg *config.AppleId) (status int) {
+	const defaultPasswordEnv = "@env:AC_PASSWORD"
+
+	// Set ENV values for unspecified
+	if appleIdCfg.Username == "" {
+		appleIdCfg.Username = os.Getenv("AC_USERNAME")
+	}
+	if appleIdCfg.Password == "" {
+		appleIdCfg.Password = defaultPasswordEnv
+	}
+	if appleIdCfg.ApiKey == "" {
+		appleIdCfg.ApiKey = os.Getenv("AC_APIKEY")
+	}
+	if appleIdCfg.ApiIssuer == "" {
+		appleIdCfg.ApiIssuer = os.Getenv("AC_APIISSUER")
+	}
+	if appleIdCfg.Provider == "" {
+		appleIdCfg.Provider = os.Getenv("AC_PROVIDER")
+	}
+
+	// Nor of authentications methods were chosen.
+	if appleIdCfg.Username == "" && appleIdCfg.ApiKey == "" {
+		printAppleIdUsage()
+		return 1
+	}
+
+	// Looks like a password authentication: verify that password is set.
+	if appleIdCfg.Username != "" {
+		var passwordUnset bool
+		envName := strings.TrimPrefix(defaultPasswordEnv, "@env:")
+		switch appleIdCfg.Password {
+		case "":
+			passwordUnset = true
+		case defaultPasswordEnv:
+			_, passwordUnset = os.LookupEnv(envName)
+		}
+		if passwordUnset {
+			color.New(color.Bold, color.FgRed).Fprintf(os.Stdout, "❗️ No apple_id `password` provided\n")
+			color.New(color.FgRed).Fprintf(os.Stdout,
+				"An Apple ID password (or lookup directive) must be specified in the\n"+
+					"`apple_id` block or it must exist in the environment as %s,\n"+
+					"otherwise we won't be able to authenticate with Apple to notarize.\n", envName)
+			return 1
+		}
+
+		// We've got username+password set -- OK now.
+		return 0
+	}
+
+	// API authentication.
+	if appleIdCfg.ApiKey != "" {
+		if appleIdCfg.ApiIssuer != "" {
+			return 0 // Both API Key and Issuer set -- OK.
+		}
+		color.New(color.Bold, color.FgRed).Fprintf(os.Stdout, "❗️ No apple_id `api_issuer` provided\n")
+		color.New(color.FgRed).Fprintf(os.Stdout,
+			"An issuer of the App Store Connect API key must be specified in the\n"+
+				"`apple_id` block or it must exist in the environment as AC_APIISSUER,\n"+
+				"otherwise we won't be able to authenticate with AC API to notarize.\n")
+		return 1
+	}
+
+	// Check once more to be sure we didn't missed something.
+	switch {
+	case appleIdCfg.Username != "" && appleIdCfg.Password != "":
+		return 0 // ok
+	case appleIdCfg.ApiKey != "" && appleIdCfg.ApiIssuer != "":
+		return 0 // ok
+	}
+
+	printAppleIdUsage()
+	return 1
+}
+
+func printAppleIdUsage() {
+	color.New(color.Bold, color.FgRed).Fprintf(os.Stdout, "❗️ No apple_id `username` or `api_key` provided\n")
+	color.New(color.FgRed).Fprintf(os.Stdout,
+		"An Apple ID username OR API key must be specified in the `apple_id` block or\n"+
+			"in the appropriate environment variables (AC_USERNAME and AC_APIKEY relatively),\n"+
+			"otherwise we won't be able to authenticate with Apple to notarize.\n")
 }
 
 func printHelp(fs *flag.FlagSet) {

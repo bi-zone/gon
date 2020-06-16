@@ -41,9 +41,13 @@ func upload(ctx context.Context, opts *Options) (string, error) {
 		"altool",
 		"--notarize-app",
 		"--primary-bundle-id", opts.BundleId,
-		"-u", opts.Username,
-		"-p", opts.Password,
 	}
+
+	auth, err := opts.AuthArgs()
+	if err != nil {
+		return "", err
+	}
+	cmd.Args = append(cmd.Args, auth...)
 
 	if opts.Provider != "" {
 		cmd.Args = append(cmd.Args,
@@ -69,7 +73,7 @@ func upload(ctx context.Context, opts *Options) (string, error) {
 	)
 
 	// Execute
-	err := cmd.Run()
+	err = cmd.Run()
 
 	// Log the result
 	logger.Info("notarization submission complete",

@@ -43,6 +43,22 @@ type AppleId struct {
 	// as passing '@env:AC_PASSWORD'.
 	Password string `hcl:"password,optional"`
 
+	// ApiKey is the name of a API key generated on App Store Connect portal.
+	// Apple requires such keys to be stored with the name of 'AuthKey_<apiKey>.p8'
+	// in a one of following directories './private_keys', '~/private_keys',
+	// '~/.private_keys' and '~/.appstoreconnect/private_keys'.
+	//
+	// You must specify either Username and Password or ApiKey and ApiIssuer.
+	// API authorization takes precedence over the username+password one.
+	//
+	// If omitted will be set from environment via AC_APIKEY.
+	ApiKey string `hcl:"api_key,optional"`
+
+	// ApiIssuer is the ID of the specified ApiKey Issuer. Required if ApiKey is specified.
+	//
+	// If omitted will be set from environment via AC_APIISSUER.
+	ApiIssuer string `hcl:"api_issuer,optional"`
+
 	// Provider is the AC provider. This is optional and only needs to be
 	// specified if you're using an Apple ID account that has multiple
 	// teams.

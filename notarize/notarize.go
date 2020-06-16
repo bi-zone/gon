@@ -32,6 +32,14 @@ type Options struct {
 	// providers.
 	Provider string
 
+	// ApiKey is the name of a API key generated on App Store Connect portal.
+	// (Note that it doesn't a file name. Refer to `xcrun altool --help` for
+	// more info about API key format).
+	ApiKey string
+
+	// ApiIssuer is the ID of the specified ApiKey Issuer. Required if ApiKey is specified.
+	ApiIssuer string
+
 	// UploadLock, if specified, will limit concurrency when uploading
 	// packages. The notary submission process does not allow concurrent
 	// uploads of packages with the same bundle ID, it appears. If you set
@@ -49,6 +57,28 @@ type Options struct {
 	// used for tests to overwrite where the codesign binary is. If this isn't
 	// specified then we use `xcrun altool` as the base.
 	BaseCmd *exec.Cmd
+}
+
+// AuthArgs returns `xcrun altool` authentication arguments using provided
+// `Username+Password` or `ApiKey+ApiIssuer`. API authentication takes
+// precedence over password authentication. Returns error if can't select
+// an authentication method.
+func (o Options) AuthArgs() ([]string, error) {
+	switch {
+	case o.ApiKey != "" && o.ApiIssuer != "":
+		return []string{
+			"--apiKey", o.ApiKey,
+			"--apiIssuer", o.ApiIssuer,
+		}, nil
+	case o.Username != "" && o.Password != "":
+		return []string{
+			"-u", o.Username,
+			"-p", o.Password,
+		}, nil
+	default:
+		return nil, fmt.Errorf("no authorization info given. " +
+			"Please specify Apple username + password or apiKey + apiIssuer")
+	}
 }
 
 // Notarize performs the notarization process for macOS applications. This

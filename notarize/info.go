@@ -81,10 +81,14 @@ func info(ctx context.Context, uuid string, opts *Options) (*Info, error) {
 		"altool",
 		"--notarization-info",
 		uuid,
-		"-u", opts.Username,
-		"-p", opts.Password,
 		"--output-format", "xml",
 	}
+
+	auth, err := opts.AuthArgs()
+	if err != nil {
+		return nil, err
+	}
+	cmd.Args = append(cmd.Args, auth...)
 
 	// We store all output in out for logging and in case there is an error
 	var out, combined bytes.Buffer
@@ -99,7 +103,7 @@ func info(ctx context.Context, uuid string, opts *Options) (*Info, error) {
 	)
 
 	// Execute
-	err := cmd.Run()
+	err = cmd.Run()
 
 	// Log the result
 	logger.Info("notarization info command finished",
