@@ -219,7 +219,12 @@ func realMain() int {
 		}
 	}
 
-	// If we have no items to notarize then its probably an error in the configuration.
+	// If a user wants just to sign and/or package an app -- return here.
+	if cfg.DontNotarize {
+		return 0
+	}
+
+	// If we have no items to notarize and DontNotarize isn't set then its probably an error in the configuration.
 	if len(items) == 0 {
 		color.New(color.Bold, color.FgYellow).Fprintf(os.Stdout, "\n⚠️  No items to notarize\n")
 		color.New(color.FgYellow).Fprintf(os.Stdout,

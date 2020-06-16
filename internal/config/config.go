@@ -28,6 +28,10 @@ type Config struct {
 	// Dmg, if present, creates a dmg file to package the signed `Source` files
 	// into. Dmg files support stapling so this allows offline usage.
 	Dmg *Dmg `hcl:"dmg,block"`
+
+	// DontNotarize tells `gon` to stop before the notarization step (when
+	// sign and packaging steps will be complete).
+	DontNotarize bool `hcl:"dont_notarize,optional"`
 }
 
 // AppleId are the authentication settings for Apple systems.
