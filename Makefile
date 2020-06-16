@@ -21,5 +21,11 @@ vendor: vendor/create-dmg
 vendor/create-dmg:
 	rm -rf vendor/create-dmg
 	git clone https://github.com/andreyvit/create-dmg vendor/create-dmg
+
+	# Checkout to the latest tag
+	$(eval LATEST_TAG := $(shell git --git-dir=vendor/create-dmg/.git describe --first-parent --tags --abbrev=0))
+	cd vendor/create-dmg && \
+		git reset --hard "$(LATEST_TAG)"
+
 	rm -rf vendor/create-dmg/.git
 

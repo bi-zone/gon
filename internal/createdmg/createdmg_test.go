@@ -15,7 +15,7 @@ func TestCmd(t *testing.T) {
 	defer Close(cmd)
 	require.NoError(err)
 	require.FileExists(cmd.Path)
-	require.FileExists(filepath.Join(cmd.Path, "..", "support", "dmg-license.py"))
+	require.FileExists(filepath.Join(cmd.Path, "..", "support", "licenseDMG.py"))
 
 	require.NoError(Close(cmd))
 	require.NoError(Close(cmd))
