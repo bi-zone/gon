@@ -1,12 +1,15 @@
 package config
 
 import (
+	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/sebdah/goldie"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -37,4 +40,26 @@ func TestParseFile(t *testing.T) {
 			goldie.Assert(t, fi.Name(), []byte(spew.Sdump(cfg)))
 		})
 	}
+}
+
+func TestEnvVarsConfig(t *testing.T) {
+	f, err := ioutil.TempFile("", "config_*.hcl")
+	require.NoError(t, err, "Failed to create temp file")
+
+	_, err = io.WriteString(f, `
+apple_id {
+  username = "${AC_USER}" 			# New style.
+  password = "$env:AC_PASSWORD" 	# Old style
+}`)
+	require.NoError(t, err, "Failed to write test config")
+
+	// Set env variables.
+	require.NoError(t, os.Setenv("AC_USER", "user"), "Failed to set AC_USER")
+
+	// Parse and check env vars were substituted to the config.
+	cfg, err := ParseFile(f.Name())
+	require.NoError(t, err, "Failed to parse config")
+
+	assert.Equal(t, "user", cfg.AppleId.Username)
+	assert.Equal(t, "$env:AC_PASSWORD", cfg.AppleId.Password)
 }
