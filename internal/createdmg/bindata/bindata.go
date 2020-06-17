@@ -11,6 +11,9 @@
 // ../../../vendor/create-dmg/support/README (219B)
 // ../../../vendor/create-dmg/support/licenseDMG.py (7.133kB)
 // ../../../vendor/create-dmg/support/template.applescript (1.828kB)
+// ../../../vendor/create-dmg/.editorconfig (373B)
+// ../../../vendor/create-dmg/.gitignore (30B)
+// ../../../vendor/create-dmg/.this-is-the-create-dmg-repo (128B)
 
 package bindata
 
@@ -94,7 +97,7 @@ func license() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "LICENSE", size: 1120, mode: os.FileMode(0644), modTime: time.Unix(1592308293, 0)}
+	info := bindataFileInfo{name: "LICENSE", size: 1120, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x4b, 0xdb, 0x61, 0xf5, 0xfa, 0xc6, 0x9f, 0xd5, 0xcc, 0x3, 0x8, 0x53, 0x5f, 0xec, 0xbc, 0x4f, 0x22, 0xbb, 0x75, 0xa3, 0xe6, 0x15, 0xad, 0xbd, 0x5d, 0x73, 0x92, 0x37, 0x2f, 0xa, 0xc, 0xc3}}
 	return a, nil
 }
@@ -114,7 +117,7 @@ func makefile() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "Makefile", size: 886, mode: os.FileMode(0644), modTime: time.Unix(1592308293, 0)}
+	info := bindataFileInfo{name: "Makefile", size: 886, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb7, 0x8f, 0xc3, 0x79, 0x98, 0xa0, 0xa3, 0x25, 0xa, 0xde, 0x83, 0xa0, 0x51, 0xca, 0x2a, 0x53, 0x76, 0x5c, 0x80, 0xc2, 0x18, 0x53, 0x1d, 0xb6, 0x84, 0xd4, 0x17, 0x2b, 0xb4, 0xc3, 0x10, 0xcf}}
 	return a, nil
 }
@@ -134,7 +137,7 @@ func readmeMd() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "README.md", size: 3898, mode: os.FileMode(0644), modTime: time.Unix(1592308293, 0)}
+	info := bindataFileInfo{name: "README.md", size: 3898, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd8, 0xd3, 0xef, 0x2e, 0xb6, 0xc0, 0x87, 0x96, 0xe8, 0xc4, 0x49, 0x4c, 0xf6, 0x2a, 0xd2, 0x29, 0xfa, 0x24, 0x7f, 0x24, 0x82, 0x8c, 0x70, 0x79, 0xf2, 0x22, 0xd8, 0xea, 0x53, 0x79, 0x22, 0x5a}}
 	return a, nil
 }
@@ -154,7 +157,7 @@ func builderCreateDmgBuilder() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "builder/create-dmg.builder", size: 516, mode: os.FileMode(0644), modTime: time.Unix(1592308293, 0)}
+	info := bindataFileInfo{name: "builder/create-dmg.builder", size: 516, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x45, 0x19, 0x22, 0x65, 0xf3, 0x99, 0x89, 0x73, 0x97, 0xd7, 0xcb, 0x8f, 0x52, 0xdf, 0x52, 0x7f, 0x54, 0x38, 0x3f, 0xee, 0x5f, 0xfc, 0xda, 0x21, 0x63, 0x94, 0xf9, 0x7, 0xd3, 0x15, 0x6d, 0x60}}
 	return a, nil
 }
@@ -174,7 +177,7 @@ func createDmg() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "create-dmg", size: 12345, mode: os.FileMode(0755), modTime: time.Unix(1592308293, 0)}
+	info := bindataFileInfo{name: "create-dmg", size: 12345, mode: os.FileMode(0755), modTime: time.Unix(1592396669, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x75, 0xb2, 0x6, 0xf2, 0xb3, 0x61, 0x18, 0x25, 0xf4, 0xe3, 0x2a, 0x62, 0x6c, 0xbe, 0x32, 0x99, 0x23, 0x14, 0xee, 0x6c, 0xe7, 0x7f, 0x2d, 0x11, 0xf6, 0x74, 0xf4, 0xd0, 0x8e, 0x46, 0xd2, 0xf}}
 	return a, nil
 }
@@ -194,7 +197,7 @@ func docProjectDeveloperNotesMd() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "doc-project/Developer Notes.md", size: 1412, mode: os.FileMode(0644), modTime: time.Unix(1592308293, 0)}
+	info := bindataFileInfo{name: "doc-project/Developer Notes.md", size: 1412, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x6b, 0xce, 0x4, 0xaf, 0xe6, 0x3d, 0x60, 0x12, 0x7c, 0x46, 0x19, 0x81, 0x96, 0x2d, 0xa8, 0x25, 0xf3, 0x79, 0x1b, 0x5f, 0xbb, 0x73, 0x1c, 0xa3, 0xda, 0x4b, 0xed, 0x49, 0xcc, 0xfb, 0x8f, 0x9a}}
 	return a, nil
 }
@@ -214,7 +217,7 @@ func docProjectReleaseChecklistMd() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "doc-project/Release Checklist.md", size: 325, mode: os.FileMode(0644), modTime: time.Unix(1592308293, 0)}
+	info := bindataFileInfo{name: "doc-project/Release Checklist.md", size: 325, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x9c, 0x6a, 0x79, 0x7f, 0xa5, 0x52, 0x70, 0x39, 0xce, 0xeb, 0x4a, 0x97, 0x33, 0x8e, 0xda, 0xd2, 0x9a, 0x3d, 0xd4, 0xf7, 0x99, 0x4e, 0x48, 0x4, 0xd2, 0xb8, 0x4e, 0x99, 0x71, 0x86, 0xa5, 0xd5}}
 	return a, nil
 }
@@ -234,7 +237,7 @@ func supportLicenseLicensedmgPyhacker() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "support/LICENSE-licenseDMG-pyhacker", size: 1059, mode: os.FileMode(0644), modTime: time.Unix(1592308293, 0)}
+	info := bindataFileInfo{name: "support/LICENSE-licenseDMG-pyhacker", size: 1059, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x45, 0x8d, 0x5f, 0xd4, 0x17, 0x58, 0x25, 0x44, 0xa, 0xd3, 0x2d, 0x6b, 0xf6, 0xaf, 0x45, 0xd1, 0xa1, 0x9d, 0x4a, 0xdb, 0x31, 0x6b, 0x55, 0x7d, 0x86, 0x9c, 0x65, 0x60, 0xb6, 0x69, 0x2e, 0x0}}
 	return a, nil
 }
@@ -254,7 +257,7 @@ func supportReadme() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "support/README", size: 219, mode: os.FileMode(0644), modTime: time.Unix(1592308293, 0)}
+	info := bindataFileInfo{name: "support/README", size: 219, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xd6, 0x81, 0x33, 0x80, 0xc8, 0x51, 0x9d, 0xc7, 0x67, 0x3b, 0x3, 0x7a, 0x10, 0x97, 0xfe, 0x5b, 0xac, 0x5c, 0x99, 0x5, 0x49, 0x6c, 0xaf, 0x6e, 0x9b, 0xc1, 0x6b, 0x40, 0x30, 0xd0, 0xa8, 0x68}}
 	return a, nil
 }
@@ -274,7 +277,7 @@ func supportLicensedmgPy() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "support/licenseDMG.py", size: 7133, mode: os.FileMode(0755), modTime: time.Unix(1592308293, 0)}
+	info := bindataFileInfo{name: "support/licenseDMG.py", size: 7133, mode: os.FileMode(0755), modTime: time.Unix(1592396669, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x56, 0x96, 0x7e, 0xbd, 0x1b, 0xc6, 0x7e, 0x5b, 0x3b, 0x94, 0x17, 0x9e, 0xaa, 0x12, 0xa, 0xaf, 0xe2, 0x63, 0x53, 0xaf, 0xf4, 0x7e, 0x8, 0xef, 0x1f, 0x6f, 0xa3, 0xb5, 0x97, 0xff, 0xc3, 0x85}}
 	return a, nil
 }
@@ -294,8 +297,68 @@ func supportTemplateApplescript() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "support/template.applescript", size: 1828, mode: os.FileMode(0644), modTime: time.Unix(1592308293, 0)}
+	info := bindataFileInfo{name: "support/template.applescript", size: 1828, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x13, 0x72, 0x7c, 0x79, 0x30, 0xc5, 0xb, 0xe6, 0x39, 0xa1, 0xeb, 0x19, 0x1e, 0x89, 0x3f, 0x1e, 0xbc, 0x72, 0xc2, 0x70, 0x26, 0x8d, 0x46, 0x11, 0x39, 0x1b, 0x41, 0x41, 0xa, 0x3e, 0x86, 0x2a}}
+	return a, nil
+}
+
+var _Editorconfig = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x64\x8e\xcf\x4a\xc3\x40\x10\xc6\xef\xf3\x14\x03\xbd\x85\x36\x05\xf1\x20\x85\x5e\x14\xef\xde\x3c\x94\x12\xb6\x9b\xd9\x66\x75\xbb\xb3\xcc\xcc\x12\xa2\xf8\xee\x92\x28\x2a\xf5\xfa\xfd\xfb\x7d\x2b\x7c\xec\xa3\xb1\x3c\x70\x0e\xf1\x8c\x81\x05\xbd\x90\x33\xda\xf4\x97\x33\x16\xe1\x17\xf2\x06\x57\xa9\xa8\xe8\x46\x52\xbe\xd0\x0e\x07\xb3\xa2\xbb\xed\xf6\x6f\xa0\x65\x39\x03\x08\xb3\xe1\x1e\x4d\x2a\x01\x1c\x9a\x23\x50\xee\x3b\x0e\x5d\x8a\x99\x70\x8f\x29\x40\xcc\x4a\x62\x5d\x88\xd9\xa5\x2e\xd3\xf8\xed\x2c\x0d\x3f\x38\x51\x9a\x07\xaa\x85\xcd\x1d\xc0\x0a\x9f\x09\xab\x12\x9a\x3b\x29\xc6\x8c\x5c\x05\x79\xcc\xe8\xb9\x27\x38\xbc\xff\xde\x5e\x37\xad\x2b\x25\x91\x7a\x89\xc5\xd6\x4d\xab\xc3\xc7\x11\x62\xee\x29\x5b\xa7\x36\xa5\x05\xe2\x4e\x3f\x52\x7c\x9b\x95\x9b\x99\x71\x5f\x0d\x6d\x20\x7c\x9a\x6c\xe0\xaf\x6d\x1c\x09\x4b\x4d\x69\x66\x06\xe1\x0b\x96\x69\x70\xfe\x95\x64\x7e\xa3\xa8\xc5\x79\x52\x38\x34\x6d\x99\xfe\x51\x16\xf3\x8a\x73\x0b\x9f\x01\x00\x00\xff\xff\x1b\xb8\x0b\xc9\x75\x01\x00\x00")
+
+func EditorconfigBytes() ([]byte, error) {
+	return bindataRead(
+		_Editorconfig,
+		".editorconfig",
+	)
+}
+
+func Editorconfig() (*asset, error) {
+	bytes, err := EditorconfigBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: ".editorconfig", size: 373, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x68, 0x46, 0x8, 0x5a, 0xcc, 0x26, 0x89, 0xb0, 0x69, 0xef, 0x73, 0xc2, 0xc6, 0x38, 0x39, 0x39, 0x65, 0x18, 0x59, 0x90, 0x81, 0x8e, 0x4c, 0x37, 0x67, 0xf7, 0xeb, 0xe6, 0x3, 0xd5, 0x9, 0x96}}
+	return a, nil
+}
+
+var _Gitignore = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xd2\x2b\x2e\xcb\xe3\xd2\x2b\x2b\x4e\xce\x4f\x49\xe5\xe2\xd2\xd2\x4b\xc9\x4d\xe7\xd2\x73\x09\x8e\x0f\x2e\xc9\x2f\x4a\xe5\x02\x04\x00\x00\xff\xff\xb2\xbf\x69\x14\x1e\x00\x00\x00")
+
+func GitignoreBytes() ([]byte, error) {
+	return bindataRead(
+		_Gitignore,
+		".gitignore",
+	)
+}
+
+func Gitignore() (*asset, error) {
+	bytes, err := GitignoreBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: ".gitignore", size: 30, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x7e, 0x1, 0x22, 0xda, 0xac, 0x94, 0xb9, 0x98, 0x5, 0x61, 0x56, 0xbb, 0x32, 0x1d, 0xaf, 0x2f, 0x7b, 0x4b, 0xfb, 0xec, 0x43, 0x89, 0x33, 0xf5, 0xf6, 0x50, 0xcb, 0xf3, 0x55, 0x42, 0xd8, 0xc2}}
+	return a, nil
+}
+
+var _ThisIsTheCreateDmgRepo = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x1c\xc9\xb1\x0d\x02\x31\x0c\x05\xd0\xfe\xa6\xf8\x1d\x15\xac\xc1\x02\x2c\x10\x2e\xff\x2e\x46\x8e\x8d\x6c\x47\x88\xed\x91\xa8\xdf\x63\x48\x42\x12\xaf\x95\x85\x86\xbe\xe6\xfc\xe2\x10\x25\xd2\xb1\x07\x5b\xf1\xda\xe7\x89\xbd\x19\x8a\xaa\xf8\x0c\xd6\x60\x40\xea\x92\x78\x52\xec\x44\x2c\xc3\x11\x3e\x37\xb1\x94\x4e\xd4\x20\xee\x52\x08\xbe\x1d\x1e\x7f\x43\x33\x88\x65\x35\x55\x76\xa8\xef\xad\xc4\xed\xb6\xfd\x02\x00\x00\xff\xff\xeb\x53\x27\x5e\x80\x00\x00\x00")
+
+func ThisIsTheCreateDmgRepoBytes() ([]byte, error) {
+	return bindataRead(
+		_ThisIsTheCreateDmgRepo,
+		".this-is-the-create-dmg-repo",
+	)
+}
+
+func ThisIsTheCreateDmgRepo() (*asset, error) {
+	bytes, err := ThisIsTheCreateDmgRepoBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: ".this-is-the-create-dmg-repo", size: 128, mode: os.FileMode(0644), modTime: time.Unix(1592396669, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xfb, 0x24, 0x94, 0xeb, 0x10, 0x14, 0x6a, 0x84, 0xbb, 0xb2, 0xe, 0xbb, 0x19, 0x8c, 0x2a, 0x9, 0xfb, 0x72, 0xae, 0xd1, 0x19, 0x70, 0x6d, 0xc5, 0x5b, 0x6e, 0xc3, 0x64, 0x40, 0x18, 0x38, 0x3f}}
 	return a, nil
 }
 
@@ -401,6 +464,9 @@ var _bindata = map[string]func() (*asset, error){
 	"support/README":                      supportReadme,
 	"support/licenseDMG.py":               supportLicensedmgPy,
 	"support/template.applescript":        supportTemplateApplescript,
+	".editorconfig":                       Editorconfig,
+	".gitignore":                          Gitignore,
+	".this-is-the-create-dmg-repo":        ThisIsTheCreateDmgRepo,
 }
 
 // AssetDir returns the file names below a certain
@@ -444,9 +510,12 @@ type bintree struct {
 }
 
 var _bintree = &bintree{nil, map[string]*bintree{
-	"LICENSE":   &bintree{license, map[string]*bintree{}},
-	"Makefile":  &bintree{makefile, map[string]*bintree{}},
-	"README.md": &bintree{readmeMd, map[string]*bintree{}},
+	".editorconfig":                &bintree{Editorconfig, map[string]*bintree{}},
+	".gitignore":                   &bintree{Gitignore, map[string]*bintree{}},
+	".this-is-the-create-dmg-repo": &bintree{ThisIsTheCreateDmgRepo, map[string]*bintree{}},
+	"LICENSE":                      &bintree{license, map[string]*bintree{}},
+	"Makefile":                     &bintree{makefile, map[string]*bintree{}},
+	"README.md":                    &bintree{readmeMd, map[string]*bintree{}},
 	"builder": &bintree{nil, map[string]*bintree{
 		"create-dmg.builder": &bintree{builderCreateDmgBuilder, map[string]*bintree{}},
 	}},
