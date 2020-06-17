@@ -145,8 +145,10 @@ func realMain() int {
 	if cfg.AppleId == nil {
 		cfg.AppleId = &config.AppleId{}
 	}
-	if ret := validateAndSetEnv(cfg.AppleId); ret != 0 {
-		return ret
+	if !cfg.DontNotarize {
+		if ret := validateAndSetEnv(cfg.AppleId); ret != 0 {
+			return ret
+		}
 	}
 
 	// If we're in source mode, then sign & package as configured
