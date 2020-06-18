@@ -42,23 +42,22 @@ func realMain() int {
 		}
 	}
 
-	var logLevel string
-	var logJSON bool
 	flags := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
-	flags.BoolVar(&logJSON, "log-json", false, "Output logs in JSON format for machine readability.")
-	flags.StringVar(&logLevel, "log-level", "", "Log level to output. Defaults to no logging.")
+	logJSON := flags.Bool("log-json", false, "Output logs in JSON format for machine readability.")
+	logLevel := flags.String("log-level", "", "Log level to output. Defaults to no logging.")
+	dontNotarize := flags.Bool("dont-notarize", false, "Do all the defined steps except notarization")
 	flags.Parse(os.Args[1:])
 	args := flags.Args()
 
 	// Build a logger
 	logOut := ioutil.Discard
-	if logLevel != "" {
+	if *logLevel != "" {
 		logOut = os.Stderr
 	}
 	logger := hclog.New(&hclog.LoggerOptions{
-		Level:      hclog.LevelFromString(logLevel),
+		Level:      hclog.LevelFromString(*logLevel),
 		Output:     logOut,
-		JSONFormat: logJSON,
+		JSONFormat: *logJSON,
 	})
 
 	// We expect a configuration file
@@ -145,7 +144,7 @@ func realMain() int {
 	if cfg.AppleId == nil {
 		cfg.AppleId = &config.AppleId{}
 	}
-	if !cfg.DontNotarize {
+	if !*dontNotarize {
 		if ret := validateAndSetEnv(cfg.AppleId); ret != 0 {
 			return ret
 		}
@@ -222,7 +221,7 @@ func realMain() int {
 	}
 
 	// If a user wants just to sign and/or package an app -- return here.
-	if cfg.DontNotarize {
+	if *dontNotarize {
 		return 0
 	}
 
