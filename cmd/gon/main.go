@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/fatih/color"
 	"github.com/hashicorp/go-hclog"
@@ -45,7 +46,8 @@ func realMain() int {
 	flags := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
 	logJSON := flags.Bool("log-json", false, "Output logs in JSON format for machine readability.")
 	logLevel := flags.String("log-level", "", "Log level to output. Defaults to no logging.")
-	dontNotarize := flags.Bool("dont-notarize", false, "Do all the defined steps except notarization")
+	dontNotarize := flags.Bool("dont-notarize", false, "Do all the defined steps except notarization.")
+	pollInterval := flags.Duration("poll-interval", 30*time.Second, "Specify interval for notarization polling.")
 	flags.Parse(os.Args[1:])
 	args := flags.Args()
 
@@ -257,11 +259,12 @@ func realMain() int {
 			defer wg.Done()
 
 			err := items[idx].notarize(context.Background(), &processOptions{
-				Config:     cfg,
-				Logger:     logger,
-				Prefix:     prefixes[idx],
-				OutputLock: &lock,
-				UploadLock: &uploadLock,
+				Config:          cfg,
+				Logger:          logger,
+				Prefix:          prefixes[idx],
+				OutputLock:      &lock,
+				UploadLock:      &uploadLock,
+				PollingInterval: pollInterval,
 			})
 
 			if err != nil {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/fatih/color"
 	"github.com/hashicorp/go-hclog"
@@ -42,8 +43,9 @@ type itemState struct {
 
 // processOptions are the shared options for running operations on an item.
 type processOptions struct {
-	Config *config.Config
-	Logger hclog.Logger
+	Config          *config.Config
+	Logger          hclog.Logger
+	PollingInterval *time.Duration
 
 	// Prefix is the prefix string for output
 	Prefix string
@@ -67,16 +69,17 @@ func (i *item) notarize(ctx context.Context, opts *processOptions) error {
 
 	// Start notarization
 	info, err := notarize.Notarize(ctx, &notarize.Options{
-		File:       i.Path,
-		BundleId:   bundleId,
-		Username:   opts.Config.AppleId.Username,
-		Password:   opts.Config.AppleId.Password,
-		Provider:   opts.Config.AppleId.Provider,
-		ApiKey:     opts.Config.AppleId.ApiKey,
-		ApiIssuer:  opts.Config.AppleId.ApiIssuer,
-		Logger:     opts.Logger.Named("notarize"),
-		Status:     &statusHuman{Prefix: opts.Prefix, Lock: lock},
-		UploadLock: opts.UploadLock,
+		File:            i.Path,
+		BundleId:        bundleId,
+		Username:        opts.Config.AppleId.Username,
+		Password:        opts.Config.AppleId.Password,
+		Provider:        opts.Config.AppleId.Provider,
+		ApiKey:          opts.Config.AppleId.ApiKey,
+		ApiIssuer:       opts.Config.AppleId.ApiIssuer,
+		Logger:          opts.Logger.Named("notarize"),
+		Status:          &statusHuman{Prefix: opts.Prefix, Lock: lock},
+		UploadLock:      opts.UploadLock,
+		PollingInterval: opts.PollingInterval,
 	})
 
 	// Save the error state. We don't save the notarization result yet

@@ -57,6 +57,12 @@ type Options struct {
 	// used for tests to overwrite where the codesign binary is. If this isn't
 	// specified then we use `xcrun altool` as the base.
 	BaseCmd *exec.Cmd
+
+	// PollingInterval defines how often `gon` will poll the notarization status.
+	// Apple Connect API has some kind of opaque (at least when we use altool)
+	// rate limiting so try to set the interval reasonable low. If `nil` --
+	// default interval will be used.
+	PollingInterval *time.Duration
 }
 
 // AuthArgs returns `xcrun altool` authentication arguments using provided
@@ -107,6 +113,11 @@ func Notarize(ctx context.Context, opts *Options) (*Info, error) {
 		lock = &sync.Mutex{}
 	}
 
+	pollInterval := 30 * time.Second
+	if opts.PollingInterval != nil {
+		pollInterval = *opts.PollingInterval
+	}
+
 	// First perform the upload
 	lock.Lock()
 	status.Submitting()
@@ -123,7 +134,7 @@ func Notarize(ctx context.Context, opts *Options) (*Info, error) {
 	// this queue is hours long. We just have to wait.
 	result := &Info{RequestUUID: uuid}
 	for {
-		time.Sleep(10 * time.Second)
+		time.Sleep(pollInterval)
 		_, err := info(ctx, result.RequestUUID, opts)
 		if err == nil {
 			break
@@ -171,7 +182,7 @@ func Notarize(ctx context.Context, opts *Options) (*Info, error) {
 	RETRY:
 		// Sleep, we just do a constant poll every 5 seconds. I haven't yet
 		// found any rate limits to the service so this seems okay.
-		time.Sleep(5 * time.Second)
+		time.Sleep(pollInterval)
 	}
 
 	// If we're in an invalid status then return an error
