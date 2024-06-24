@@ -1,4 +1,4 @@
-module github.com/mitchellh/gon
+module github.com/bi-zone/gon
 
 go 1.13
 

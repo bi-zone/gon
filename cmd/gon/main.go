@@ -14,10 +14,10 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-multierror"
 
-	"github.com/mitchellh/gon/internal/config"
-	"github.com/mitchellh/gon/package/dmg"
-	"github.com/mitchellh/gon/package/zip"
-	"github.com/mitchellh/gon/sign"
+	"github.com/bi-zone/gon/internal/config"
+	"github.com/bi-zone/gon/package/dmg"
+	"github.com/bi-zone/gon/package/zip"
+	"github.com/bi-zone/gon/sign"
 )
 
 // Set by build process
@@ -391,7 +391,7 @@ or JSON format. The JSON format makes it particularly easy to machine-generate
 the configuration and pass it into gon.
 
 For example configurations as well as full help text, see the README on GitHub:
-http://github.com/mitchellh/gon
+https://github.com/bi-zone/gon
 
 Flags:
 `

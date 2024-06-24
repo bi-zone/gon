@@ -68,7 +68,7 @@ The easiest way to install `gon` is via [Homebrew](https://brew.sh):
     $ brew install mitchellh/gon/gon
 
 You may also download the appropriate release for your platform
-from the [releases page](https://github.com/mitchellh/gon/releases).
+from the [releases page](https://github.com/bi-zone/gon/releases).
 These are all signed and notarized to run out of the box on macOS 10.15+.
 
 You can also compile from source using Go 1.13 or later using standard
@@ -410,7 +410,7 @@ signs:
     # you'll need to have gon on PATH
     cmd: gon
     # you can follow the gon docs to properly create the gon.hcl config file:
-    # https://github.com/mitchellh/gon
+    # https://github.com/bi-zone/gon
     args:
     - gon.hcl
     artifacts: all
@@ -420,7 +420,7 @@ To learn more, see the [GoReleaser documentation](https://goreleaser.com/customi
 
 ## Go Library
 
-[![Godoc](https://godoc.org/github.com/mitchellh/gon?status.svg)](https://godoc.org/github.com/mitchellh/gon)
+[![Godoc](https://godoc.org/github.com/bi-zone/gon?status.svg)](https://godoc.org/github.com/bi-zone/gon)
 
 We also expose a supported API for signing, packaging, and notarizing
 files using the Go programming language. Please see the linked Go documentation
