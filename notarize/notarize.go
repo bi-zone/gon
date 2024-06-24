@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/user"
 	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 
@@ -238,6 +240,11 @@ func Notarize(ctx context.Context, opts *Options) (*Info, *Log, error) {
 }
 
 func guessApiKeyFile(apiKey string) (string, error) {
+	usr, err := user.Current()
+	if err != nil {
+		return "", fmt.Errorf("can't resolve homedir: %w", err)
+	}
+
 	// `xcrun altool --help` -- apiKey param comment.
 	altoolDefaultDirs := []string{
 		"./private_keys",
@@ -246,11 +253,14 @@ func guessApiKeyFile(apiKey string) (string, error) {
 		"~/.appstoreconnect/private_keys",
 	}
 	if envDir := os.Getenv("API_PRIVATE_KEYS_DIR"); envDir != "" {
-		altoolDefaultDirs = append(altoolDefaultDirs, envDir)
+		altoolDefaultDirs = []string{envDir}
 	}
 
 	keyName := "AuthKey_" + apiKey + ".p8"
 	for _, dir := range altoolDefaultDirs {
+		if strings.HasPrefix(dir, "~/") {
+			dir = filepath.Join(usr.HomeDir, dir[2:])
+		}
 		path := filepath.Join(dir, keyName)
 		if s, err := os.Stat(path); err == nil && s.Mode().IsRegular() {
 			return path, nil
