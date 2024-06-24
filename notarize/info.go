@@ -66,8 +66,10 @@ func info(ctx context.Context, uuid string, opts *Options) (*Info, error) {
 		"notarytool",
 		"info",
 		uuid,
-		"--team-id", opts.Provider,
 		"--output-format", "plist",
+	}
+	if opts.Provider != "" {
+		cmd.Args = append(cmd.Args, "--team-id", opts.Provider)
 	}
 
 	auth, err := opts.AuthArgs()

@@ -69,7 +69,9 @@ func log(ctx context.Context, uuid string, opts *Options) (*Log, error) {
 		"notarytool",
 		"log",
 		uuid,
-		"--team-id", opts.Provider,
+	}
+	if opts.Provider != "" {
+		cmd.Args = append(cmd.Args, "--team-id", opts.Provider)
 	}
 
 	auth, err := opts.AuthArgs()

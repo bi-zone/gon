@@ -40,8 +40,10 @@ func upload(ctx context.Context, opts *Options) (string, error) {
 		filepath.Base(cmd.Path),
 		"notarytool",
 		"submit", opts.File,
-		"--team-id", opts.Provider,
 		"--output-format", "plist",
+	}
+	if opts.Provider != "" {
+		cmd.Args = append(cmd.Args, "--team-id", opts.Provider)
 	}
 
 	auth, err := opts.AuthArgs()
