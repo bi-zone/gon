@@ -43,16 +43,20 @@ type AppleId struct {
 	// as passing '@env:AC_PASSWORD'.
 	Password string `hcl:"password,optional"`
 
-	// ApiKey is the name of a API key generated on App Store Connect portal.
-	// Apple requires such keys to be stored with the name of 'AuthKey_<apiKey>.p8'
-	// in a one of following directories './private_keys', '~/private_keys',
-	// '~/.private_keys' and '~/.appstoreconnect/private_keys'.
+	// ApiKey is the name (ID) of an API key generated on App Store Connect portal.
 	//
 	// You must specify either Username and Password or ApiKey and ApiIssuer.
 	// API authorization takes precedence over the username+password one.
 	//
 	// If omitted will be set from environment via AC_APIKEY.
 	ApiKey string `hcl:"api_key,optional"`
+
+	// ApiKeyPath specifies an exact path to the API key file in a `.p8` format.
+	//
+	// If omitted, `gon` will search for an 'AuthKey_<api_key>.p8' file in a one of the
+	// following directories './private_keys', '~/private_keys', '~/.private_keys',
+	// '~/.appstoreconnect/private_keys' or in dir specified via API_PRIVATE_KEYS_DIR env.
+	ApiKeyPath string `hcl:"api_key_path,optional"`
 
 	// ApiIssuer is the ID of the specified ApiKey Issuer. Required if ApiKey is specified.
 	//

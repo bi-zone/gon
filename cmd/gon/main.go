@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"debug/buildinfo"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -14,10 +15,10 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-multierror"
 
-	"github.com/mitchellh/gon/internal/config"
-	"github.com/mitchellh/gon/package/dmg"
-	"github.com/mitchellh/gon/package/zip"
-	"github.com/mitchellh/gon/sign"
+	"github.com/bi-zone/gon/internal/config"
+	"github.com/bi-zone/gon/package/dmg"
+	"github.com/bi-zone/gon/package/zip"
+	"github.com/bi-zone/gon/sign"
 )
 
 // Set by build process
@@ -35,10 +36,14 @@ func realMain() int {
 		v = strings.TrimLeft(v, "-")
 		if v == "v" || v == "version" {
 			if version == "" {
-				version = "dev"
+				if v, err := parseRevision(); err == nil {
+					version = "commit " + v
+				} else {
+					version = "dev"
+				}
 			}
 
-			fmt.Printf("version %s\n", version)
+			fmt.Printf("bi-zone/gon version %s\n", version)
 			return 0
 		}
 	}
@@ -380,6 +385,23 @@ func printHelp(fs *flag.FlagSet) {
 	fs.PrintDefaults()
 }
 
+func parseRevision() (string, error) {
+	me, err := os.Executable()
+	if err != nil {
+		return "", fmt.Errorf("can't find myself: %w", err)
+	}
+	info, err := buildinfo.ReadFile(me)
+	if err != nil {
+		return "", fmt.Errorf("no buildinfo: %w", err)
+	}
+	for _, s := range info.Settings {
+		if s.Key == "vcs.revision" {
+			return s.Value, nil
+		}
+	}
+	return "", fmt.Errorf("can't find build revision")
+}
+
 const help = `
 gon signs, notarizes, and packages binaries for macOS.
 
@@ -391,7 +413,7 @@ or JSON format. The JSON format makes it particularly easy to machine-generate
 the configuration and pass it into gon.
 
 For example configurations as well as full help text, see the README on GitHub:
-http://github.com/mitchellh/gon
+https://github.com/bi-zone/gon
 
 Flags:
 `

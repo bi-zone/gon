@@ -23,10 +23,13 @@ archives:
       darwin: macos
       amd64: x86_64
 
+checksum:
+  disable: true
+
 signs:
   - signature: "${artifact}_macos.dmg"
     ids:
-      - macos
+      - macos-zip
     cmd: gon
     args:
       - .gon.hcl
@@ -49,7 +52,7 @@ release:
     - glob: ./dist/gon_macos.zip
 
 brews:
-  - github:
+  - tap:
       owner: mitchellh
       name: homebrew-gon
-    description: "Sign, notarize, and package macOS CLI tools and applications written in any language."
+    description: "Sign, notarize, and package macOS CLI applications written in any language."

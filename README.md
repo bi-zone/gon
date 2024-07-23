@@ -1,3 +1,8 @@
+## Fork Features
+- Allow to skip notarization step explicitly
+- Add an ability to use Environment variables as hcl variables
+- Add an option to change notarization status polling interval
+
 # gon - CLI and Go Library for macOS Notarization
 
 gon is a simple, no-frills tool for
@@ -33,6 +38,7 @@ gon helps you automate the process of notarization.
     - [Prompts](#prompts)
 - [Usage with GoReleaser](#usage-with-goreleaser)
 - [Go Library](#go-library)
+- [Troubleshooting](#troubleshooting)
 - [Roadmap](#roadmap)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -59,11 +65,10 @@ The example below runs `gon` against itself to generate a zip and dmg.
 
 The easiest way to install `gon` is via [Homebrew](https://brew.sh):
 
-    $ brew tap mitchellh/gon
     $ brew install mitchellh/gon/gon
 
 You may also download the appropriate release for your platform
-from the [releases page](https://github.com/mitchellh/gon/releases).
+from the [releases page](https://github.com/bi-zone/gon/releases).
 These are all signed and notarized to run out of the box on macOS 10.15+.
 
 You can also compile from source using Go 1.13 or later using standard
@@ -149,6 +154,7 @@ bundle_id = "com.mitchellh.example.terraform"
 apple_id {
   username = "mitchell@example.com"
   password = "@env:AC_PASSWORD"
+  provider = "UL304B4VGY"
 }
 
 sign {
@@ -171,7 +177,8 @@ zip {
     "bundle_id" : "com.mitchellh.example.terraform",
     "apple_id": {
         "username" : "mitchell@example.com",
-        "password":  "@env:AC_PASSWORD"
+        "password":  "@env:AC_PASSWORD",
+        "provider":  "UL304B4VGY"
     },
     "sign" :{
         "application_identity" : "Developer ID Application: Mitchell Hashimoto"
@@ -212,8 +219,11 @@ Supported configurations:
       The `@env:<name>` syntax will load the password from the named environmental
       variable. If this value isn't set, we'll attempt to use the `AC_PASSWORD`
       environment variable as a default.
+      
+      **NOTE**: If you have 2FA enabled, the password must be an application password, not
+      your normal apple id password. See [Troubleshooting](#troubleshooting) for details.
 
-    * `provider` (`string` _optional_) - The App Store Connect provider when using
+    * `provider` (`string`) - The App Store Connect provider when using
       multiple teams within App Store Connect. If this isn't set, we'll attempt
       to read the `AC_PROVIDER` environment variable as a default.
 
@@ -400,7 +410,7 @@ signs:
     # you'll need to have gon on PATH
     cmd: gon
     # you can follow the gon docs to properly create the gon.hcl config file:
-    # https://github.com/mitchellh/gon
+    # https://github.com/bi-zone/gon
     args:
     - gon.hcl
     artifacts: all
@@ -410,7 +420,7 @@ To learn more, see the [GoReleaser documentation](https://goreleaser.com/customi
 
 ## Go Library
 
-[![Godoc](https://godoc.org/github.com/mitchellh/gon?status.svg)](https://godoc.org/github.com/mitchellh/gon)
+[![Godoc](https://godoc.org/github.com/bi-zone/gon?status.svg)](https://godoc.org/github.com/bi-zone/gon)
 
 We also expose a supported API for signing, packaging, and notarizing
 files using the Go programming language. Please see the linked Go documentation
