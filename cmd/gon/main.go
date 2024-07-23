@@ -36,8 +36,8 @@ func realMain() int {
 		v = strings.TrimLeft(v, "-")
 		if v == "v" || v == "version" {
 			if version == "" {
-				if v, err := parseRevision(); err == nil {
-					version = "commit " + v
+				if v, err := parseVersion(); err == nil && v != "" {
+					version = v
 				} else {
 					version = "dev"
 				}
@@ -385,7 +385,7 @@ func printHelp(fs *flag.FlagSet) {
 	fs.PrintDefaults()
 }
 
-func parseRevision() (string, error) {
+func parseVersion() (string, error) {
 	me, err := os.Executable()
 	if err != nil {
 		return "", fmt.Errorf("can't find myself: %w", err)
@@ -394,12 +394,13 @@ func parseRevision() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("no buildinfo: %w", err)
 	}
+	version := info.Main.Version
 	for _, s := range info.Settings {
 		if s.Key == "vcs.revision" {
-			return s.Value, nil
+			version += " commit " + s.Value
 		}
 	}
-	return "", fmt.Errorf("can't find build revision")
+	return version, nil
 }
 
 const help = `
