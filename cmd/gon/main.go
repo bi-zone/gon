@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"debug/buildinfo"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -35,10 +36,14 @@ func realMain() int {
 		v = strings.TrimLeft(v, "-")
 		if v == "v" || v == "version" {
 			if version == "" {
-				version = "dev"
+				if v, err := parseRevision(); err == nil {
+					version = "commit " + v
+				} else {
+					version = "dev"
+				}
 			}
 
-			fmt.Printf("version %s\n", version)
+			fmt.Printf("bi-zone/gon version %s\n", version)
 			return 0
 		}
 	}
@@ -378,6 +383,23 @@ func printAppleIdUsage() {
 func printHelp(fs *flag.FlagSet) {
 	fmt.Fprintf(os.Stdout, strings.TrimSpace(help)+"\n\n", os.Args[0])
 	fs.PrintDefaults()
+}
+
+func parseRevision() (string, error) {
+	me, err := os.Executable()
+	if err != nil {
+		return "", fmt.Errorf("can't find myself: %w", err)
+	}
+	info, err := buildinfo.ReadFile(me)
+	if err != nil {
+		return "", fmt.Errorf("no buildinfo: %w", err)
+	}
+	for _, s := range info.Settings {
+		if s.Key == "vcs.revision" {
+			return s.Value, nil
+		}
+	}
+	return "", fmt.Errorf("can't find build revision")
 }
 
 const help = `
