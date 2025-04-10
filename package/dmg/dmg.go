@@ -14,7 +14,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -48,6 +47,12 @@ type Options struct {
 
 	// VolumeName is the name of the dmg volume when mounted.
 	VolumeName string
+
+	// SkipPrettification disables running of prettification logic of `create-dmg`.
+	// The logic itself is relied on AppleScript and could be faulty on CI or restricted env.
+	//
+	// Ref: https://github.com/create-dmg/create-dmg/issues/43
+	SkipPrettification bool
 
 	// Logger is the logger to use. If this is nil then no logging will be done.
 	Logger hclog.Logger
@@ -87,6 +92,11 @@ func Dmg(ctx context.Context, opts *Options) error {
 		"--volname", opts.VolumeName,
 	}
 
+	// Skip AppleScript invocation if requested.
+	if opts.SkipPrettification {
+		args = append(args, "--skip-jenkins")
+	}
+
 	// Inject our files
 	for _, f := range opts.Files {
 		args = append(args, "--add-file", filepath.Base(f), f, "0", "0")
@@ -97,7 +107,7 @@ func Dmg(ctx context.Context, opts *Options) error {
 	// inject our files.
 	root := opts.Root
 	if root == "" {
-		td, err := ioutil.TempDir("", "gon")
+		td, err := os.MkdirTemp("", "gon")
 		if err != nil {
 			return err
 		}

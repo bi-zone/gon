@@ -39,7 +39,7 @@ type AppleId struct {
 	// Password is the password for your AC account. This also accepts
 	// two additional forms: '@keychain:<name>' which reads the password from
 	// the keychain and '@env:<name>' which reads the password from an
-	// an environmental variable named <name>. If omitted, it has the same effect
+	// environmental variable named <name>. If omitted, it has the same effect
 	// as passing '@env:AC_PASSWORD'.
 	Password string `hcl:"password,optional"`
 
@@ -88,6 +88,7 @@ type Sign struct {
 	// ApplicationIdentity is the ID or name of the certificate to
 	// use for signing binaries. This is used for all binaries in "source".
 	ApplicationIdentity string `hcl:"application_identity"`
+
 	// Specify a path to an entitlements file in plist format
 	EntitlementsFile string `hcl:"entitlements_file,optional"`
 }
@@ -100,6 +101,12 @@ type Dmg struct {
 	// Volume name is the name of the volume that shows up in the title
 	// and sidebar after opening it.
 	VolumeName string `hcl:"volume_name"`
+
+	// SkipPrettification disables running of prettification logic of `create-dmg`.
+	// The logic itself is relied on AppleScript and could be faulty on CI or restricted env.
+	//
+	// N.B. Enabling this option will make opened `.dmg` in finder less pretty than before.
+	SkipPrettification bool `hcl:"skip_prettification,optional"`
 }
 
 // Zip are the options for a zip file as output.
