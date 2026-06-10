@@ -192,9 +192,9 @@ func Notarize(ctx context.Context, opts *Options) (*Info, *Log, error) {
 		}
 
 	RETRYINFO:
-		// Sleep, we just do a constant poll every 5 seconds. I haven't yet
-		// found any rate limits to the service so this seems okay.
-		time.Sleep(5 * time.Second)
+		// Sleep before polling again. Respect the configured interval to avoid
+		// Apple Connect rate limiting during the analysis phase.
+		time.Sleep(pollInterval)
 	}
 
 	logResult := &Log{JobId: uuid}
