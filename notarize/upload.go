@@ -20,37 +20,38 @@ func upload(ctx context.Context, opts *Options) (string, error) {
 		logger = hclog.NewNullLogger()
 	}
 
-	// Build our command
-	var cmd exec.Cmd
+	// Resolve the tool path and env, honoring a BaseCmd override (used by tests).
+	var base exec.Cmd
 	if opts.BaseCmd != nil {
-		cmd = *opts.BaseCmd
+		base = *opts.BaseCmd
 	}
-
-	// We only set the path if it isn't set. This lets the options set the
-	// path to the codesigning binary that we use.
-	if cmd.Path == "" {
+	if base.Path == "" {
 		path, err := exec.LookPath("xcrun")
 		if err != nil {
 			return "", err
 		}
-		cmd.Path = path
+		base.Path = path
 	}
 
-	cmd.Args = []string{
-		filepath.Base(cmd.Path),
+	args := []string{
 		"notarytool",
 		"submit", opts.File,
 		"--output-format", "plist",
 	}
 	if opts.Provider != "" {
-		cmd.Args = append(cmd.Args, "--team-id", opts.Provider)
+		args = append(args, "--team-id", opts.Provider)
 	}
 
 	auth, err := opts.AuthArgs()
 	if err != nil {
 		return "", err
 	}
-	cmd.Args = append(cmd.Args, auth...)
+	args = append(args, auth...)
+
+	// Build a context-aware command so a cancelled ctx kills the process.
+	cmd := exec.CommandContext(ctx, base.Path, args...)
+	cmd.Args[0] = filepath.Base(base.Path)
+	cmd.Env = base.Env
 
 	// We store all output in out for logging and in case there is an error
 	var out, combined bytes.Buffer
