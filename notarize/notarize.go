@@ -146,7 +146,9 @@ func Notarize(ctx context.Context, opts *Options) (*Info, *Log, error) {
 	// this queue is hours long. We just have to wait.
 	infoResult := &Info{RequestUUID: uuid}
 	for {
-		time.Sleep(pollInterval)
+		if err := sleepCtx(ctx, pollInterval); err != nil {
+			return infoResult, nil, err
+		}
 		_, err := info(ctx, infoResult.RequestUUID, opts)
 		if err == nil {
 			break
@@ -194,7 +196,9 @@ func Notarize(ctx context.Context, opts *Options) (*Info, *Log, error) {
 	RETRYINFO:
 		// Sleep before polling again. Respect the configured interval to avoid
 		// Apple Connect rate limiting during the analysis phase.
-		time.Sleep(pollInterval)
+		if err := sleepCtx(ctx, pollInterval); err != nil {
+			return infoResult, nil, err
+		}
 	}
 
 	logResult := &Log{JobId: uuid}
@@ -225,9 +229,11 @@ func Notarize(ctx context.Context, opts *Options) (*Info, *Log, error) {
 		}
 
 	RETRYLOG:
-		// Sleep, we just do a constant poll every 5 seconds. I haven't yet
-		// found any rate limits to the service so this seems okay.
-		time.Sleep(pollInterval)
+		// Sleep before polling again. Respect the configured interval to avoid
+		// Apple Connect rate limiting.
+		if err := sleepCtx(ctx, pollInterval); err != nil {
+			return infoResult, logResult, err
+		}
 	}
 
 	// If we're in an invalid status then return an error
@@ -267,4 +273,17 @@ func guessApiKeyFile(apiKey string) (string, error) {
 		}
 	}
 	return "", fmt.Errorf("can't found an API key file in default dirs")
+}
+
+func sleepCtx(ctx context.Context, d time.Duration) error {
+	// Using timer approach in case someone will use it with go < 1.23.
+	timer := time.NewTimer(d)
+	defer timer.Stop()
+
+	select {
+	case <-timer.C:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	}
 }
