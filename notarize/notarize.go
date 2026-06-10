@@ -37,7 +37,8 @@ type Options struct {
 	ApiKey string
 
 	// ApiKeyPath specifies an absolute path to the `.p8` file related to the ApiKey.
-	// (Refer to `xcrun altool --help` for more info about API key format).
+	// If omitted, gon searches the historical altool key directories (see
+	// guessApiKeyFile); notarytool's `--key` itself requires an explicit path.
 	ApiKeyPath string
 
 	// ApiIssuer is the ID of the specified ApiKey Issuer. Required if ApiKey is specified.
@@ -62,9 +63,8 @@ type Options struct {
 	BaseCmd *exec.Cmd
 
 	// PollingInterval defines how often `gon` will poll the notarization status.
-	// Apple Connect API has some kind of opaque (at least when we use altool)
-	// rate limiting so try to set the interval reasonable low. If `nil` --
-	// default interval will be used.
+	// Apple Connect API has some kind of opaque rate limiting so try to set the
+	// interval reasonable low. If `nil` -- default interval will be used.
 	PollingInterval *time.Duration
 }
 
@@ -80,7 +80,7 @@ func (o Options) AuthArgs() ([]string, error) {
 			o.ApiKeyPath, err = guessApiKeyFile(o.ApiKey)
 			if err != nil {
 				return nil, fmt.Errorf("%w. %s",
-					err, "Please specify api_key_path or put a key into default altool location")
+					err, "Please specify api_key_path or place the key in one of gon's default key directories")
 			}
 		}
 		return []string{
@@ -251,7 +251,8 @@ func guessApiKeyFile(apiKey string) (string, error) {
 		return "", fmt.Errorf("can't resolve homedir: %w", err)
 	}
 
-	// `xcrun altool --help` -- apiKey param comment.
+	// These are the dirs documented by `xcrun altool --help` (apiKey param).
+	// notarytool itself does NOT search them, so gon replicates altool's behavior.
 	altoolDefaultDirs := []string{
 		"./private_keys",
 		"~/private_keys",
