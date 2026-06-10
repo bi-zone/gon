@@ -1,5 +1,9 @@
+.idea/
+
+gon
 cmd/gon/gon
 dist/
 
 # For testing:
 config.hcl
+fix.sh
