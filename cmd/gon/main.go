@@ -181,6 +181,7 @@ func realMain() int {
 			err = zip.Zip(context.Background(), &zip.Options{
 				Files:      cfg.Source,
 				OutputPath: cfg.Zip.OutputPath,
+				Logger:     logger.Named("zip"),
 			})
 			if err != nil {
 				fmt.Fprintf(os.Stdout, color.RedString("❗️ Error creating zip archive:\n\n%s\n", err))

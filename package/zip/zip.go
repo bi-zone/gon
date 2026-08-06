@@ -120,24 +120,38 @@ func dittoCmd(ctx context.Context, base *exec.Cmd) (*exec.Cmd, error) {
 //
 // The directory is guaranteed to be empty if error is non-nil.
 func createRoot(ctx context.Context, logger hclog.Logger, opts *Options) (string, error) {
-	// Build our copy command
-	cmd, err := dittoCmd(ctx, opts.BaseCmd)
-	if err != nil {
-		return "", err
-	}
-
 	// Create our root directory
 	root, err := ioutil.TempDir("", "gon-createzip")
 	if err != nil {
 		return "", err
 	}
 
+	for _, file := range opts.Files {
+		// there is no flag to keep parent dir on copy with ditto (--keepParent works only with -c)
+		err := copyFile(ctx, logger, opts, file, filepath.Join(root, filepath.Base(file)))
+		if err != nil {
+			os.RemoveAll(root)
+			return "", err
+		}
+	}
+
+	return root, nil
+}
+
+// copyFile copies src into dst using ditto.
+func copyFile(ctx context.Context, logger hclog.Logger, opts *Options, src, dst string) error {
+	// Build our copy command
+	cmd, err := dittoCmd(ctx, opts.BaseCmd)
+	if err != nil {
+		return err
+	}
+
 	// Setup our args to copy our files into the root
 	cmd.Args = []string{
 		filepath.Base(cmd.Path),
 	}
-	cmd.Args = append(cmd.Args, opts.Files...)
-	cmd.Args = append(cmd.Args, root)
+	cmd.Args = append(cmd.Args, src)
+	cmd.Args = append(cmd.Args, dst)
 
 	// We store all output in out for logging and in case there is an error
 	var out bytes.Buffer
@@ -153,15 +167,12 @@ func createRoot(ctx context.Context, logger hclog.Logger, opts *Options) (string
 
 	// Execute copy
 	if err = cmd.Run(); err != nil {
-		os.RemoveAll(root)
-
 		logger.Error(
 			"error copying source files to create zip archive",
 			"err", err,
 			"output", out.String(),
 		)
-		return "", err
+		return err
 	}
-
-	return root, nil
+	return nil
 }
